@@ -1,0 +1,72 @@
+[
+
+    {
+  
+      "inputs": [
+  
+        {
+  
+          "internalType": "address",
+  
+          "name": "_tokenMasterAddress",
+  
+          "type": "address"
+  
+        }
+  
+      ],
+  
+      "stateMutability": "nonpayable",
+  
+      "type": "constructor"
+  
+    },
+  
+    {
+  
+      "inputs": [
+  
+        {
+  
+          "internalType": "uint256",
+  
+          "name": "_occasionId",
+  
+          "type": "uint256"
+  
+        },
+  
+        {
+  
+          "internalType": "uint256",
+  
+          "name": "_seat",
+  
+          "type": "uint256"
+  
+        },
+  
+        {
+  
+          "internalType": "address",
+  
+          "name": "_to",
+  
+          "type": "address"
+  
+        }
+  
+      ],
+  
+      "name": "transferTicket",
+  
+      "outputs": [],
+  
+      "stateMutability": "nonpayable",
+  
+      "type": "function"
+  
+    }
+  
+  ]
+   
