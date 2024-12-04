@@ -21,6 +21,8 @@ contract TokenMaster is ERC721 {
     mapping(uint256 => Occasion) occasions;
     mapping(uint256 => mapping(address => bool)) public hasBought;
     mapping(uint256 => mapping(uint256 => address)) public seatTaken; 
+    mapping(uint256 => mapping(uint256 => uint256)) public seatToToken; // Mapping of seat number to token ID
+
     mapping(uint256 => uint256[]) seatsTaken; //array of seats taken
 // evaluate person calling the function is the owner
     modifier onlyOwner() {
@@ -70,6 +72,7 @@ contract TokenMaster is ERC721 {
         seatTaken[_id][_seat] = msg.sender; // <-- Assign seat
         seatsTaken[_id].push(_seat); // <-- Update seats currently taken
         totalSupply++;
+        seatToToken[_id][_seat] = totalSupply;
         _safeMint(msg.sender, totalSupply); //check if the user has bought
     }
 // read the occasion from the bloackchain
@@ -79,12 +82,23 @@ contract TokenMaster is ERC721 {
     function getSeatsTaken(uint256 _id) public view returns (uint256[] memory) {
         return seatsTaken[_id];
     }
-        function updateSeatOwner(uint256 _id, uint256 _seat, address _newOwner) public {
-        require(seatTaken[_id][_seat] == msg.sender, "You do not own this seat");
-        seatTaken[_id][_seat] = _newOwner;
-        hasBought[_id][msg.sender] = false;
-        hasBought[_id][_newOwner] = true;
-    }
+
+     // Resell a ticket
+function resellTicket(uint256 _id, uint256 _seat, address _to) public {
+    require(seatTaken[_id][_seat] == msg.sender, "You do not own this ticket");
+    require(_to != address(0), "Invalid buyer address");
+    require(!hasBought[_id][_to], "Buyer has already bought a ticket for this occasion");
+    // Get the token ID
+    uint256 tokenId = seatToToken[_id][_seat];
+    require(_exists(tokenId), "Token does not exist");
+    // Update seat ownership
+    seatTaken[_id][_seat] = _to;
+    hasBought[_id][msg.sender] = false;
+    hasBought[_id][_to] = true;
+    // Transfer the NFT
+    _safeTransfer(msg.sender, _to, tokenId, "");
+}
+
     function withdraw() public onlyOwner {
         (bool success, ) = owner.call{value: address(this).balance}("");
         require(success);

@@ -129,4 +129,73 @@ describe("TokenMaster", () => {
       expect(balance).to.equal(0)
     })
   })
+  describe("Resale", () => {
+    const ID = 1;
+    const SEAT = 50;
+    const AMOUNT = ethers.utils.parseUnits("1", "ether");
+    let buyer2;
+  
+    beforeEach(async () => {
+      [, , buyer2] = await ethers.getSigners();
+  
+      // Mint a ticket
+      const transaction = await tokenMaster.connect(buyer).mint(ID, SEAT, { value: AMOUNT });
+      await transaction.wait();
+  
+      // Validate minting
+      const owner = await tokenMaster.seatTaken(ID, SEAT);
+      const tokenId = await tokenMaster.seatToToken(ID, SEAT);
+      const tokenOwner = await tokenMaster.ownerOf(tokenId);
+  
+      expect(owner).to.equal(buyer.address);
+      expect(tokenId).to.equal(1);
+      expect(tokenOwner).to.equal(buyer.address);
+    });
+  
+    it("Allows the original buyer to resell a ticket", async () => {
+      // Resell the ticket
+      const tokenId = await tokenMaster.seatToToken(ID, SEAT);
+      expect(tokenId).to.equal(1); // Ensure token ID mapping is correct
+  
+      const transaction = await tokenMaster.connect(buyer).resellTicket(ID, SEAT, buyer2.address);
+      await transaction.wait();
+  
+      // Check updated ownership
+      const newOwner = await tokenMaster.seatTaken(ID, SEAT);
+      const tokenOwner = await tokenMaster.ownerOf(tokenId);
+  
+      expect(newOwner).to.equal(buyer2.address);
+      expect(tokenOwner).to.equal(buyer2.address);
+  
+      // Check buyer status
+      const originalBuyerStatus = await tokenMaster.hasBought(ID, buyer.address);
+      const newBuyerStatus = await tokenMaster.hasBought(ID, buyer2.address);
+  
+      expect(originalBuyerStatus).to.equal(false);
+      expect(newBuyerStatus).to.equal(true);
+    });
+  
+    it("Reverts if a non-owner tries to resell a ticket", async () => {
+      await expect(
+        tokenMaster.connect(buyer2).resellTicket(ID, SEAT, buyer2.address)
+      ).to.be.revertedWith("You do not own this ticket");
+    });
+  
+    it("Reverts if the buyer address is invalid", async () => {
+      await expect(
+        tokenMaster.connect(buyer).resellTicket(ID, SEAT, ethers.constants.AddressZero)
+      ).to.be.revertedWith("Invalid buyer address");
+    });
+  
+    it("Reverts if the new buyer already owns a ticket for the occasion", async () => {
+      // Mint another ticket for buyer2
+      await tokenMaster.connect(buyer2).mint(ID, 51, { value: AMOUNT });
+  
+      await expect(
+        tokenMaster.connect(buyer).resellTicket(ID, SEAT, buyer2.address)
+      ).to.be.revertedWith("Buyer has already bought a ticket for this occasion");
+    });
+  });
+  
+ 
 })

@@ -33,7 +33,7 @@ const TransferTicket = ({ ticketTransfer, account, provider, occasions }) => {
     }
 
   }
- 
+
   return (
 <div>
 <h3>Transfer Ticket</h3>
@@ -77,6 +77,6 @@ const TransferTicket = ({ ticketTransfer, account, provider, occasions }) => {
   )
 
 }
- 
+
 export default TransferTicket
  

@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 // Components
 import Navigation from './components/Navigation'
-import TransferTicket from './components/TransferTicket'
+// import TransferTicket from './components/TransferTicket'
 // import Sort from './components/Sort'
 import Card from './components/Card'
 import SeatChart from './components/SeatChart'
 // ABIs
 import TokenMaster from './abis/TokenMaster.json'
-import TicketTransfer from './abis/TicketTransfer.json'
+// import TicketTransfer from './abis/TicketTransfer.json'
 // Config
 import config from './config.json'
 function App() {
@@ -17,7 +17,7 @@ function App() {
   const [tokenMaster, setTokenMaster] = useState(null)
   const [occasions, setOccasions] = useState([])
   const [occasion, setOccasion] = useState({})
-  const [ticketTransfer, setTicketTransfer] = useState(null)
+  // const [ticketTransfer, setTicketTransfer] = useState(null)
   const [toggle, setToggle] = useState(false)
   const loadBlockchainData = async () => {
   const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -25,8 +25,8 @@ function App() {
   const network = await provider.getNetwork()
   const tokenMaster = new ethers.Contract(config[network.chainId].TokenMaster.address, TokenMaster, provider)
   setTokenMaster(tokenMaster)
-  const ticketTransfer = new ethers.Contract(config[network.chainId].TicketTransfer.address, TicketTransfer, provider)
-  setTicketTransfer(ticketTransfer)
+  // const ticketTransfer = new ethers.Contract(config[network.chainId].TicketTransfer.address, TicketTransfer, provider)
+  // setTicketTransfer(ticketTransfer)
   const totalOccasions = await tokenMaster.totalOccasions()
   const occasions = []
 
@@ -82,12 +82,12 @@ function App() {
         />
       )}
 
-<TransferTicket
+{/* <TransferTicket
         ticketTransfer={ticketTransfer}
         account={account}
         provider={provider}
         occasions={occasions}
-      />
+      /> */}
     </div>
   );
 }

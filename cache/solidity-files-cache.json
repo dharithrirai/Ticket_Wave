@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/I528719/Documents/Bits/TicketWave/contracts/TokenMaster.sol": {
-      "lastModificationDate": 1732806319302,
-      "contentHash": "fcb08e79a0a3ab560ab298fab06ed84d",
+      "lastModificationDate": 1732945968871,
+      "contentHash": "32781d691e8d7daa08e650ee26f44c8a",
       "sourceName": "contracts/TokenMaster.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -402,43 +402,6 @@
       ],
       "artifacts": [
         "Math"
-      ]
-    },
-    "/Users/I528719/Documents/Bits/TicketWave/contracts/TicketTransfer.sol": {
-      "lastModificationDate": 1732806283750,
-      "contentHash": "496c2febfaa83f4539ced0a360960117",
-      "sourceName": "contracts/TicketTransfer.sol",
-      "solcConfig": {
-        "version": "0.8.17",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "./TokenMaster.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.9"
-      ],
-      "artifacts": [
-        "TicketTransfer"
       ]
     }
   }

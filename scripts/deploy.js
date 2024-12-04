@@ -16,13 +16,7 @@ async function main() {
   await tokenMaster.deployed()
 
   console.log(`Deployed TokenMaster Contract at: ${tokenMaster.address}\n`)
-
-
-  const TicketTransfer = await ethers.getContractFactory("TicketTransfer")
-  const ticketTransfer = await TicketTransfer.deploy(tokenMaster.address)
-  await ticketTransfer.deployed()
  
-  console.log(`Deployed TicketTransfer Contract at: ${ticketTransfer.address}\n`)
 
   // List 6 events
   const occasions = [
