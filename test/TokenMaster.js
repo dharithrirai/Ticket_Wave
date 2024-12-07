@@ -1,5 +1,7 @@
 const { expect } = require("chai")
 
+//Adding Tests
+
 const NAME = "TokenMaster"
 const SYMBOL = "TM"
 
